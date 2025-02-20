@@ -151,20 +151,20 @@ jobs:
         cross build --verbose --release --target=${{ matrix.TARGET }}
 
     - name: Rename
-      run: cp target/${{ matrix.TARGET }}/release/fire_control${{ matrix.EXTENSION }} fire_control-${{ matrix.TARGET }}${{ matrix.EXTENSION }}
+      run: cp target/${{ matrix.TARGET }}/release/fire-control${{ matrix.EXTENSION }} fire-control-${{ matrix.TARGET }}${{ matrix.EXTENSION }}
 
     - uses: actions/upload-artifact@master
       with:
-        name: fire_control-${{ matrix.TARGET }}${{ matrix.EXTENSION }}
-        path: fire_control-${{ matrix.TARGET }}${{ matrix.EXTENSION }}
+        name: fire-control-${{ matrix.TARGET }}${{ matrix.EXTENSION }}
+        path: fire-control-${{ matrix.TARGET }}${{ matrix.EXTENSION }}
 
     - uses: svenstaro/upload-release-action@v2
       name: Upload binaries to release
       if: ${{ github.event_name == 'push' }}
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: fire_control-${{ matrix.TARGET }}${{ matrix.EXTENSION }}
-        asset_name: fire_control-${{ matrix.TARGET }}${{ matrix.EXTENSION }}
+        file: fire-control-${{ matrix.TARGET }}${{ matrix.EXTENSION }}
+        asset_name: fire-control-${{ matrix.TARGET }}${{ matrix.EXTENSION }}
         tag: ${{ github.ref }}
         prerelease: ${{ !startsWith(github.ref, 'refs/tags/') }}
         overwrite: true
