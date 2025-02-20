@@ -160,7 +160,7 @@ jobs:
 
     - uses: svenstaro/upload-release-action@v2
       name: Upload binaries to release
-      if: ${{ github.event_name == 'push' }}
+      # if: ${{ github.event_name == 'push' }}
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
         file: fire-control-${{ matrix.TARGET }}${{ matrix.EXTENSION }}
