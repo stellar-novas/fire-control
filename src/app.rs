@@ -1,3 +1,5 @@
+use egui::OpenUrl;
+
 /// We derive Deserialize/Serialize so we can persist app state on shutdown.
 #[derive(serde::Deserialize, serde::Serialize)]
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
@@ -52,9 +54,16 @@ impl eframe::App for FireControlApp {
 			// The top panel is often a good place for a menu bar:
 
 			egui::menu::bar(ui, |ui| {
-				// NOTE: no File->Quit on web pages!
-				// let is_web = cfg!(target_arch = "wasm32");
-				// if !is_web {
+				let is_web = cfg!(target_arch = "wasm32");
+				egui::widgets::global_theme_preference_buttons(ui);
+				if is_web {
+					ui.with_layout(egui::Layout::right_to_left(Default::default()), |ui| {
+						if ui.button("Download App").clicked() {
+							ctx.open_url(OpenUrl {url: "https://github.com/stellar-novas/fire-control/releases/tag/main".to_string(), new_tab: true });
+						};
+					});
+				};
+				// if !is_web { 
 				//     ui.menu_button("File", |ui| {
 				//         if ui.button("Quit").clicked() {
 				//             ctx.send_viewport_cmd(egui::ViewportCommand::Close);
@@ -62,15 +71,12 @@ impl eframe::App for FireControlApp {
 				//     });
 				//     ui.add_space(16.0);
 				// }
-
-				egui::widgets::global_theme_preference_buttons(ui);
 			});
 		});
 
 		egui::CentralPanel::default().show(ctx, |ui| {
 			// The central panel the region left after adding TopPanels and SidePanels
 			ui.heading("NCWL Dashboard");
-			ui.separator();
 
 			egui::Window::new("Inputs")
 				.resizable(false)
