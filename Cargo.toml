@@ -1,6 +1,6 @@
 [package]
 name = "fire-control"
-version = "1.0.0"
+version = "1.0.1"
 authors = ["Nova <stellar_novas@riseup.net>"]
 edition = "2021"
 include = ["LICENSE-APACHE", "LICENSE-MIT", "**/*.rs", "Cargo.toml"]

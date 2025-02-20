@@ -9,9 +9,7 @@ pub struct FireControlApp {
 	y2: f64,
 
 	velocity: i32,
-
 	// #[serde(skip)] // This how you opt-out of serialization of a field
-
 }
 
 impl Default for FireControlApp {
@@ -23,7 +21,7 @@ impl Default for FireControlApp {
 			x2: 0.0,
 			y2: 0.0,
 
-			velocity: 80
+			velocity: 80,
 		}
 	}
 }
@@ -74,59 +72,63 @@ impl eframe::App for FireControlApp {
 			ui.heading("NCWL Dashboard");
 			ui.separator();
 
-			egui::Window::new("Inputs").resizable(false).show(ctx, |ui| {
-				egui::Grid::new("grid").show(ui, |ui| {
-					ui.label("Current Coordinates");
-					ui.add(egui::DragValue::new(&mut self.x1));
-					ui.label("X1");
-					ui.add(egui::DragValue::new(&mut self.y1));
-					ui.label("Y1");
-					ui.end_row();
-					
-					ui.label("Target Coordinates");
-					ui.add(egui::DragValue::new(&mut self.x2));
-					ui.label("X2");
-					ui.add(egui::DragValue::new(&mut self.y2));
-					ui.label("Y2");
-					ui.end_row();
-					
-					ui.label("Shell Velocity");
-					ui.add(egui::DragValue::new(&mut self.velocity));
-					ui.end_row();
+			egui::Window::new("Inputs")
+				.resizable(false)
+				.show(ctx, |ui| {
+					egui::Grid::new("grid").show(ui, |ui| {
+						ui.label("Current Coordinates");
+						ui.add(egui::DragValue::new(&mut self.x1));
+						ui.label("X1");
+						ui.add(egui::DragValue::new(&mut self.y1));
+						ui.label("Y1");
+						ui.end_row();
+
+						ui.label("Target Coordinates");
+						ui.add(egui::DragValue::new(&mut self.x2));
+						ui.label("X2");
+						ui.add(egui::DragValue::new(&mut self.y2));
+						ui.label("Y2");
+						ui.end_row();
+
+						ui.label("Shell Velocity");
+						ui.add(egui::DragValue::new(&mut self.velocity));
+						ui.end_row();
+					});
+					// ui.horizontal(|ui| {
+					// 	ui.label("Write something: ");
+					// 	ui.text_edit_singleline(&mut self.label);
+					// 	ui.separator()
+					// });
+					//
+					// ui.add(egui::Slider::new(&mut self.value, 0.0..=10.0).text("value"));
+					// if ui.button("Increment").clicked() {
+					// 	self.value += 1.0;
+					// }
 				});
-				// ui.horizontal(|ui| {
-				// 	ui.label("Write something: ");
-				// 	ui.text_edit_singleline(&mut self.label);
-				// 	ui.separator()
-				// });
-				//
-				// ui.add(egui::Slider::new(&mut self.value, 0.0..=10.0).text("value"));
-				// if ui.button("Increment").clicked() {
-				// 	self.value += 1.0;
-				// }
-			});
-			
-			egui::Window::new("Results").resizable(false).show(ctx, |ui| {
-				let distance = ((self.x2 - self.x1).powi(2) + (self.y2 - self.y1).powi(2)).sqrt();
-				let time = distance / self.velocity as f64;
-				// let angle = ((self.y2 - self.y1) / (self.x2 - self.x1)).atan();
-				let angle = (self.y2 - self.y1).atan2(self.x2 - self.x1).to_degrees();
-				
-				egui::Grid::new("grid").show(ui, |ui| {
-					ui.label("Distance");
-					ui.add(egui::Label::new(format!("{:.2}", distance)));
-					ui.end_row();
-					
-					ui.label("Time");
-					ui.add(egui::Label::new(format!("{:.2}", time)));
-					ui.end_row();
-					
-					ui.label("Angle");
-					ui.add(egui::Label::new(format!("{:.2}", angle + 90.0)));
-					ui.end_row();
+
+			egui::Window::new("Results")
+				.resizable(false)
+				.show(ctx, |ui| {
+					let distance =
+						((self.x2 - self.x1).powi(2) + (self.y2 - self.y1).powi(2)).sqrt();
+					let time = distance / self.velocity as f64;
+					// let angle = ((self.y2 - self.y1) / (self.x2 - self.x1)).atan();
+					let angle = (self.x2 - self.x1).atan2(self.y2 - self.y1).to_degrees();
+
+					egui::Grid::new("grid").show(ui, |ui| {
+						ui.label("Distance");
+						ui.add(egui::Label::new(format!("{:.2}", distance)));
+						ui.end_row();
+
+						ui.label("Time");
+						ui.add(egui::Label::new(format!("{:.2}", time)));
+						ui.end_row();
+
+						ui.label("Angle");
+						ui.add(egui::Label::new(format!("{:.2}", angle)));
+						ui.end_row();
+					});
 				});
-				
-			});
 
 			ui.with_layout(egui::Layout::bottom_up(egui::Align::LEFT), |ui| {
 				source_code_links(ui);
@@ -145,9 +147,9 @@ fn source_code_links(ui: &mut egui::Ui) {
 	ui.horizontal(|ui| {
 		ui.spacing_mut().item_spacing.x = 0.0;
 		ui.add(egui::github_link_file!(
-            "https://github.com/stellar-novas/fire-control/blob/main/",
-            "Source code "
-        ));
+			"https://github.com/stellar-novas/fire-control/blob/main/",
+			"Source code "
+		));
 		ui.separator();
 		ui.label(" Powered by ");
 		ui.hyperlink_to("egui", "https://github.com/emilk/egui");
