@@ -90,7 +90,7 @@ impl eframe::App for FireControlApp {
 						ui.label("Y2");
 						ui.end_row();
 
-						ui.label("Shell Velocity");
+						ui.label("Velocity");
 						ui.add(egui::DragValue::new(&mut self.velocity));
 						ui.end_row();
 					});
